@@ -1,10 +1,14 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
+const password = process.argv[2]
+
+const url = `mongodb+srv://say-safe:${password}@cluster0.9g99w.mongodb.net/clients?retryWrites=true&w=majority`
 
 app.use(cors())
-app.use(express.static('build'))
 let peoples = [
   {
     'name': 'Уэй Уинстон Уилсон',
@@ -229,41 +233,71 @@ let peoples = [
 ]
 
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
 
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+app.use(express.static('build'))
 app.use(express.json())
+
+
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan('dev'))
 app.use(morgan(' \x1b[35m :body  \x1b[0m' ))
 
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
-}
-app.use(requestLogger)
 
-
+app.use(errorHandler)
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
+
 app.get('/api/peoples', (request, response) => {
-  response.json(peoples)
-})
-app.get('/api/peoples/:id', (request, response) => {
-  const id = request.params.id
-  const peopl = peoples.find(peopl => peopl.id === id)
-if (people) {
-  response.json(peopl)
-} else {
-  response.status(404).end()
-}
-  
+  Person.find({}).then(people => {
+    response.json(people)
+  })
 })
 
-const PORT = process.env.PORT || 3001
+app.get('/api/peoples/:id', (request, response) => {
+  Person.findById(request.params.id).then(person => {
+    if (person) {
+      response.json(person)
+    } else {
+      response.status(404).end()
+    }
+  })
+  .catch(error => next(error)) 
+})
+
+app.post('/api/peoples', (request, response) => {
+  const body = request.body
+
+  if (body.name === undefined) {
+    return response.status(400).json({ error: 'content missing' })
+  }
+
+  const person = new Person({
+      name: body.name,
+      photo: body.photo,
+      raiting: body.raiting,
+      gender: body.gender,
+      follow: false,
+      isOnline: false,
+      chat: []
+  })
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+})
+
+
+
+const PORT = process.env.PORT
 app.listen(PORT)
 console.log(`Server running on port \x1b[36m, ${PORT} \x1b[0m`)
 

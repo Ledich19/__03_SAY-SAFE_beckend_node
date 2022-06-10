@@ -6,5 +6,11 @@ POST http://localhost:3001/api/peoples
 Content-Type: application/json
 
 {
-    "name": "alex"
+  "name": "Питер",
+  "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeC2xXnLuuRkW9jPbfuZiAJtp74H3danF4Hw&usqp=CAU",
+  "raiting": 3,
+  "gender": "man",
+  "follow": true,
+  "isOnline": true,
+  "chat": []
 }
