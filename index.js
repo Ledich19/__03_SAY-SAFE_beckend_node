@@ -233,15 +233,7 @@ let peoples = [
 ]
 
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
-
-  next(error)
-}
 app.use(express.static('build'))
 app.use(express.json())
 
@@ -251,7 +243,7 @@ app.use(morgan('dev'))
 app.use(morgan(' \x1b[35m :body  \x1b[0m' ))
 
 
-app.use(errorHandler)
+
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -306,3 +298,16 @@ const unknownEndpoint = (request, response) => {
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }  else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+app.use(errorHandler)
