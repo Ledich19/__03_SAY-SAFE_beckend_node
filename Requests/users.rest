@@ -43,6 +43,7 @@ Authorization: bearer
 
 put  http://localhost:3001/api/users/unfollov/62a6324bd922a35d9ea0e88d
 Content-Type: application/json
+Authorization: bearer
 
 {
   "username": "test",

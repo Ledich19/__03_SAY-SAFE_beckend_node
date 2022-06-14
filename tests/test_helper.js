@@ -1,9 +1,14 @@
-const Person = require('../models/person')
+
 const User = require('../models/user')
+const Mail= require('../models/mail')
 
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
+}
+const mailsInDb = async () => {
+  const mails = await Mail.find({})
+  return mails.map(m => m.toJSON())
 }
 
 
@@ -210,6 +215,6 @@ const peopleInDb = async () => {
 }
 
 module.exports = {
-  usersInDb,
+  usersInDb, mailsInDb,
   initialPeople, nonExistingId, peopleInDb
 }

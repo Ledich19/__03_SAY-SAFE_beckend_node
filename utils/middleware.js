@@ -14,6 +14,19 @@ const unknownEndpoint = (request, response) => {
   })
 }
 
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get('authorization')
+
+  const token = authorization && authorization.toLowerCase().startsWith('bearer ')
+    ? authorization.substring(7)
+    : null
+  console.log(' \x1b[43m token' , token, '\x1b[0m')
+  console.log('response')
+  request.token = token
+  next()
+}
+
+
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
@@ -39,6 +52,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 module.exports = {
+  tokenExtractor,
   requestLogger,
   unknownEndpoint,
   errorHandler

@@ -1,5 +1,5 @@
 const peopleRouter = require('express').Router()
-const Person = require('../models/person')
+// const Person = require('../models/person')
 
 peopleRouter.get('/', async (request, response) => {
   const persons = await Person.find({})
