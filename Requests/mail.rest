@@ -1,7 +1,7 @@
 
 POST http://localhost:3001/api/mails
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1NTIwNDU3NSwiZXhwIjoxNjU1MjA4MTc1fQ.5yRio7vO2-oSFfgEcjTxGx34jd9J9_oWsOmoYwinN6Q
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1NTM3MTY2NiwiZXhwIjoxNjU1OTc2NDY2fQ.BtCzjB5rOkzF9szupiNCVDoycXFqbj37hPZPQzEt1jw
 
 {
   "user": "62a71a2f68b2589ad7c72eb1",

@@ -25,7 +25,12 @@ const userSchema = new mongoose.Schema({
       ref: 'Mail'
     }
   ],
-  chats: [],
+  chats: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Mail'
+    }
+  ],
 })
 
 userSchema.set('toJSON', {

@@ -1,31 +1,31 @@
 const mongoose = require('mongoose')
 
-const mailSchema = new mongoose.Schema({
-  user: {
+const massagesSchema = new mongoose.Schema({
+  ovner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
   },
-  ownerName: {
+  chat: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chat'
   },
   recipient: {
     type: mongoose.Schema.Types.ObjectId,
   },
-  ownerWisible: Boolean,
-  recipientWisible: Boolean,
-  ownerPhotoMin: String,
   text: String,
   data: Date,
-  type: String,
-  isReaded: Boolean,
+  isReaded: Boolean
 })
 
-mailSchema.set('toJSON', {
+massagesSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
+    // the passwordHash should not be revealed
+    delete returnedObject.passwordHash
   }
 })
 
-module.exports = mongoose.model('Mail', mailSchema)
+const Massage = mongoose.model('Massage', massagesSchema)
+
+module.exports = Massage
