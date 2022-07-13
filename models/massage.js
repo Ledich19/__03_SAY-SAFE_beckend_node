@@ -15,6 +15,8 @@ const massagesSchema = new mongoose.Schema({
   createAt: Date,
   isReaded: Boolean,
   type: String,
+},{
+  timestamps: true
 })
 
 massagesSchema.set('toJSON', {

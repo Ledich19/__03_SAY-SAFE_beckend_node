@@ -45,10 +45,10 @@ const userSchema = new mongoose.Schema({
       ref: 'Mail'
     }
   ],
-  chats: [
+  dialogs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Chat'
+      ref: 'Dialog'
     }
   ],
 }, {

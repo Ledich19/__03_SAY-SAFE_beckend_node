@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const chatsSchema = new mongoose.Schema({
+const dialogSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -9,17 +9,22 @@ const chatsSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Personal'
   },
+  lastMassage: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Massage'
+  },
+  text: String,
   newFoUser: Number,
   newFoPersonal: Number,
-  createAt: Date,
-  apdateAt: Date,
   massages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Massage'
   }],
+},{
+  timestamps: true
 })
 
-chatsSchema.set('toJSON', {
+dialogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -29,6 +34,6 @@ chatsSchema.set('toJSON', {
   }
 })
 
-const Chat = mongoose.model('Dialog', chatsSchema)
+const Dialog = mongoose.model('Dialog', dialogSchema)
 
-module.exports = Chat
+module.exports = Dialog

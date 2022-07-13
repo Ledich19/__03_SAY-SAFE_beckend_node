@@ -23,7 +23,8 @@ https://warm-brushlands-50186.herokuapp.com/
     POST (/registration)() // create new user 
     DeLETE (/:id)(token) // delete user by id 
     
-
+/api/dialogs
+    GET ()(token) // get all dialogs fo user
 
 
 console.log('\x1b[42m', ,'\x1b[0m')

@@ -1,4 +1,4 @@
-const chatsRouter = require('express').Router()
+const dialogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Personal = require('../models/personal')
@@ -6,7 +6,7 @@ const Chat = require('../models/dialog')
 
 const Massage = require('../models/massage')
 //get all Chat with avatar an name
-// chatsRouter.get('/', async (request, response) => {
+// dialogsRouter.get('/', async (request, response) => {
 //   const decodedToken = await jwt.verify(request.token, process.env.SECRET)
 //   if (!decodedToken.id) {
 //     return response.status(401).json({
@@ -21,17 +21,20 @@ const Massage = require('../models/massage')
 //   response.json(user)
 // })
 
-//get all dialogs
-chatsRouter.get('/', async (request, response) => {
+//get all user dialogs
+dialogsRouter.get('/', async (request, response) => {
   console.log('atoken ', request.token)
-  // const decodedToken = await jwt.verify(request.token, process.env.SECRET)
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({
-  //     error: 'token missing or invalid'
-  //   })
-  // }
+  const decodedToken = await jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({
+      error: 'token missing or invalid'
+    })
+  }
+  const user = await User.findById(decodedToken.id).populate('dialogs')
+  const dialogs = user.dialogs
 
-  console.log('sfdgsdf')
+
+  console.log('dialogs', dialogs)
   const initialState = [
     {
       'personal': {
@@ -256,8 +259,10 @@ chatsRouter.get('/', async (request, response) => {
   ]
   response.json(initialState)
 })
+
+
 //get messages
-chatsRouter.get('/messages/:id', async (request, response) => {
+dialogsRouter.get('/messages/:id', async (request, response) => {
   const id = request.params.id
   const messages = {
     'personal': {
@@ -556,7 +561,7 @@ chatsRouter.get('/messages/:id', async (request, response) => {
 })
 
 //add mail
-chatsRouter.post('/:id', async (request, response) => {
+dialogsRouter.post('/:id', async (request, response) => {
   console.log('\x1b[42m fffffffffffffffff \x1b[0m')
 
   const decodedToken = await jwt.verify(request.token, process.env.SECRET)
@@ -629,7 +634,7 @@ chatsRouter.post('/:id', async (request, response) => {
 })
 
 //set readed
-chatsRouter.put('/read/:id', async (request, response) => {
+dialogsRouter.put('/read/:id', async (request, response) => {
   const decodedToken = await jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({
@@ -652,4 +657,4 @@ chatsRouter.put('/read/:id', async (request, response) => {
   response.json(massageReadeded)
 })
 
-module.exports = chatsRouter
+module.exports = dialogsRouter
