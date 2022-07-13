@@ -1,8 +1,15 @@
-GET http://localhost:3001/api/users
+GET http://localhost:3001/api/personal
+
+###
+GET http://localhost:3001/api/personal?gender=all&raitingFrom=0&raitingTo=100
 
 ###
 
-POST http://localhost:3001/api/users
+GET http://localhost:3001/api/personal/count?gender=man
+
+###
+
+POST http://localhost:3001/api/personal
 Content-Type: application/json
 
 {

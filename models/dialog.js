@@ -11,9 +11,11 @@ const chatsSchema = new mongoose.Schema({
   },
   newFoUser: Number,
   newFoPersonal: Number,
+  createAt: Date,
+  apdateAt: Date,
   massages: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Personal'
+    ref: 'Massage'
   }],
 })
 
@@ -27,6 +29,6 @@ chatsSchema.set('toJSON', {
   }
 })
 
-const Chat = mongoose.model('Chat', chatsSchema)
+const Chat = mongoose.model('Dialog', chatsSchema)
 
 module.exports = Chat

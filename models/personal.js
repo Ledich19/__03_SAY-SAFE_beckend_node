@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const personalSchema = new mongoose.Schema({
   username: String,
-  photo: String,
+  avatar: String,
   rating: Number,
   email: String,
   name: String,
@@ -21,22 +21,26 @@ const personalSchema = new mongoose.Schema({
     ref: 'User'
   }],
   mails: [],
-  chats: [],
+  chats: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chat'
+  }],
   raiting: [],
-  isOnline : Boolean,
-  follovers:[],
+  isOnline: Boolean,
+  follovers: [],
 })
 
 personalSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    console.log('aaaaaaaaaaaaaaaaaa', returnedObject )
-    returnedObject.id = returnedObject._id.toString()
+    if (returnedObject._id) {
+      returnedObject.id = returnedObject._id.toString()
+
+    }
+
     delete returnedObject._id
     delete returnedObject.__v
     // the passwordHash should not be revealed
     delete returnedObject.passwordHash
-    console.log('ooooooooooo', returnedObject )
-
   }
 })
 

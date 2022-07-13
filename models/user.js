@@ -1,20 +1,40 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  username: String,
-  email: String,
+  username: {
+    type: String,
+    required: 'Username is required',
+  },
+  email: {
+    type: String,
+    required: 'Email address is required',
+    unique: 'Email address mast be uniqued',
+  },
+  passwordHash: {
+    type: String,
+    required: 'Password is required',
+  },
+  confirmed: {
+    type: Boolean,
+    default: false,
+  },
+  avatar: String,
+  confirmedHesh: String,
+
+  lastSeen: Date,
+
   name: String,
   lastName: String,
-  passwordHash: String,
   age: Number,
-  passworld: String,
   Country: String,
   city: String,
   education: String,
   gender: String,
   aboutMe: String,
   myFavoriteThem: String,
+
   Photos: [],
+
   members: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Personal'
@@ -28,9 +48,11 @@ const userSchema = new mongoose.Schema({
   chats: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Mail'
+      ref: 'Chat'
     }
   ],
+}, {
+  timestamps: true
 })
 
 userSchema.set('toJSON', {

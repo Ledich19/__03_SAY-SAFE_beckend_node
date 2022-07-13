@@ -1,5 +1,31 @@
 https://warm-brushlands-50186.herokuapp.com/
 
+/api/user 
+    GET ()() // get all users 
+    GET (/:id)() // get user by id 
+        {
+          username: String ,
+          email: String ,
+          avatar: String ,
+          lastSeen: Data ,
+          name: String ,
+          lastName: String ,
+          age: String ,
+          Country: String ,
+          city: String ,
+          education: String ,
+          gender: String ,
+          aboutMe: String ,
+          myFavoriteThem: String ,
+          Photos: String ,
+        }
+    GET (/me)(token) // get me
+    POST (/registration)() // create new user 
+    DeLETE (/:id)(token) // delete user by id 
+    
+
+
+
 console.log('\x1b[42m', ,'\x1b[0m')
 
 Reset = "\x1b[0m"

@@ -1,21 +1,21 @@
-GET http://localhost:3001/api/users
+GET http://localhost:3001/api/user
 
 ###
 
-POST http://localhost:3001/api/users
+POST http://localhost:3001/api/user/registration
 Content-Type: application/json
 
 {
   "username": "test",
   "email": "test",
   "name": "test",
-  "password": "test"
+  "password": "password"
 }
 
 
 ###
 
-DELETE  http://localhost:3001/api/users/62a617a58a454b6dea90b987
+DELETE  http://localhost:3001/api/user/62a617a58a454b6dea90b987
 Content-Type: application/json
 
 ###
@@ -30,18 +30,14 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3001/api/users/follov/62a6324bd922a35d9ea0e88d
+PUT http://localhost:3001/api/user/follow/62a6324bd922a35d9ea0e88d
 Content-Type: application/json
 Authorization: bearer 
 
-{
-  "username": "test",
-  "password": "test"
-}
 
 ###
 
-put  http://localhost:3001/api/users/unfollov/62a6324bd922a35d9ea0e88d
+put  http://localhost:3001/api/users/unfollow/62a6324bd922a35d9ea0e88d
 Content-Type: application/json
 Authorization: bearer
 

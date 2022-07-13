@@ -4,16 +4,17 @@ const massagesSchema = new mongoose.Schema({
   ovner: {
     type: mongoose.Schema.Types.ObjectId,
   },
-  chat: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Chat'
-  },
   recipient: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  dialog: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Dialog'
+  },
   text: String,
-  data: Date,
-  isReaded: Boolean
+  createAt: Date,
+  isReaded: Boolean,
+  type: String,
 })
 
 massagesSchema.set('toJSON', {
