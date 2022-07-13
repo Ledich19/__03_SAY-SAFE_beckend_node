@@ -1,5 +1,4 @@
-https://warm-brushlands-50186.herokuapp.com/
-
+https://fathomless-taiga-29564.herokuapp.com/
 
 /api/user 
     GET ()() // get all users 
