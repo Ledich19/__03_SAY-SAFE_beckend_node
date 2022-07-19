@@ -3,18 +3,23 @@ const mongoose = require('mongoose')
 const massagesSchema = new mongoose.Schema({
   ovner: {
     type: mongoose.Schema.Types.ObjectId,
-  },
-  recipient: {
-    type: mongoose.Schema.Types.ObjectId,
+    require: true,
   },
   dialog: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Dialog'
+    ref: 'Dialog',
+    require: true,
   },
-  text: String,
-  createAt: Date,
-  isReaded: Boolean,
+  text:{
+    type: String,
+    require: true,
+  },
+  wasRead: {
+    type: Boolean,
+    default: false
+  },
   type: String,
+  atachments: []
 },{
   timestamps: true
 })
@@ -29,6 +34,6 @@ massagesSchema.set('toJSON', {
   }
 })
 
-const Massage = mongoose.model('Massage', massagesSchema)
+const Message = mongoose.model('Message', massagesSchema)
 
-module.exports = Massage
+module.exports = Message

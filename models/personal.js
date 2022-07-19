@@ -25,6 +25,12 @@ const personalSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Chat'
   }],
+  dialogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Dialog'
+    }
+  ],
   raiting: [],
   isOnline: Boolean,
   follovers: [],

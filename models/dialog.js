@@ -9,14 +9,13 @@ const dialogSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Personal'
   },
-  lastMassage: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Massage'
+  lastMessage: {
+    type: String,
   },
   text: String,
   newFoUser: Number,
   newFoPersonal: Number,
-  massages: [{
+  messages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Massage'
   }],

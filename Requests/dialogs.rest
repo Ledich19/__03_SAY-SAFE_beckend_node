@@ -7,13 +7,28 @@ Content-Type: application/json
 }
 
 ###
-
-
+//get all user dialogs
 GET http://localhost:3001/api/dialogs
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1NzcyNzMzMCwiZXhwIjoxNjU4MzMyMTMwfQ.YkCO5Qf4FHTd1QSNtM2Q2qTBnGRgtwzrrsumB6hKVak
 
 ###
+//get dialog with messages
+GET http://localhost:3001/api/dialogs/62d1793dbe683c59e14168bf
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1NzcyNzMzMCwiZXhwIjoxNjU4MzMyMTMwfQ.YkCO5Qf4FHTd1QSNtM2Q2qTBnGRgtwzrrsumB6hKVak
 
+###
+
+// create new dialod
+POST http://localhost:3001/api/dialogs/create
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1NzcyNzMzMCwiZXhwIjoxNjU4MzMyMTMwfQ.YkCO5Qf4FHTd1QSNtM2Q2qTBnGRgtwzrrsumB6hKVak
+
+{
+  "user": "62cfb5a199e6561fd4151fc6",
+  "personal": "62b1c7d1c8bd0d496cacb0b4"
+}
+
+###
 
 
 

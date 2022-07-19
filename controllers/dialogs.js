@@ -1,40 +1,21 @@
+const { userExtractor }= require('../utils/middleware')
 const dialogsRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Personal = require('../models/personal')
-const Chat = require('../models/dialog')
+const Dialog = require('../models/dialog')
 
-const Massage = require('../models/massage')
-//get all Chat with avatar an name
-// dialogsRouter.get('/', async (request, response) => {
-//   const decodedToken = await jwt.verify(request.token, process.env.SECRET)
-//   if (!decodedToken.id) {
-//     return response.status(401).json({
-//       error: 'token missing or invalid'
-//     })
-//   }
-//   const user = await User.findById(decodedToken.id).populate({
-//     path: 'chats',
-//     populate: { path: 'personal' , select: ['username', 'avatar' ] }
-//   })
+//get all users dialogs without messages
+dialogsRouter.get( '/',userExtractor, async (request, response) => {
 
-//   response.json(user)
-// })
-
-//get all user dialogs
-dialogsRouter.get('/', async (request, response) => {
-  console.log('atoken ', request.token)
-  const decodedToken = await jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({
-      error: 'token missing or invalid'
+  const user = await User
+    .findById(request.user.id)
+    .populate({
+      path: 'dialogs',
+      populate: { path: 'personal', select: ['username','avatar','rating','isOnline','id'] },
     })
-  }
-  const user = await User.findById(decodedToken.id).populate('dialogs')
   const dialogs = user.dialogs
-
-
   console.log('dialogs', dialogs)
+
   const initialState = [
     {
       'personal': {
@@ -259,11 +240,55 @@ dialogsRouter.get('/', async (request, response) => {
   ]
   response.json(initialState)
 })
+//create dialog
+dialogsRouter.post('/',userExtractor, async (request, response) => {
+  console.log('\x1b[42m', 'start','\x1b[0m')
+  const {
+    user,
+    personal
+  } = request.body
+
+  const newDialog = new Dialog({
+    user,
+    personal
+  })
+  const createdDialog = await newDialog.save()
+
+  const updateUser = await User.findById(user)
+  const updatePersonal = await Personal.findById(personal)
+
+  const newUserDialogs =  {
+    dialogs: updateUser.dialogs.concat(createdDialog.id)
+  }
+  const newPersonalDialogs = {
+    dialogs: updatePersonal.dialogs.concat(createdDialog.id)
+  }
+
+  await User.findByIdAndUpdate(user ,newUserDialogs )
+  await Personal.findByIdAndUpdate(personal ,newPersonalDialogs)
+
+  // const updatedUser = User.findOneAndUpdate()
+  // const updatedPrsonal = Personal.findOneAndUpdate()
 
 
-//get messages
-dialogsRouter.get('/messages/:id', async (request, response) => {
+  response.json(createdDialog)
+})
+//delete dialog
+dialogsRouter.delete('/:id',userExtractor, async (request, response) => {
   const id = request.params.id
+  await Dialog.findByIdAndRemove(id)
+  response.status(204).send('dialog is removed').end()
+})
+//get dialog with messages
+dialogsRouter.get('/:id', userExtractor, async (request, response) => {
+  const id = request.params.id
+  const dialog = await Dialog
+    .findById(id)
+    .populate('messages')
+    .populate('personal',['username','avatar','rating','isOnline','id'])
+    .populate('user','id')
+  console.log('dialog', dialog)
+
   const messages = {
     'personal': {
       'username': 'Gross Clarke',
@@ -561,100 +586,77 @@ dialogsRouter.get('/messages/:id', async (request, response) => {
 })
 
 //add mail
-dialogsRouter.post('/:id', async (request, response) => {
-  console.log('\x1b[42m fffffffffffffffff \x1b[0m')
+// dialogsRouter.post('/:id', async (request, response) => {
+//   console.log('\x1b[42m fffffffffffffffff \x1b[0m')
 
-  const decodedToken = await jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({
-      error: 'token missing or invalid'
-    })
-  }
-  const {
-    text,
-    chatId,
-    //
-  } = request.body
-  console.log('\x1b[42m chatId', chatId, '\x1b[0m')
-  console.log('\x1b[42mchatId', chatId, '\x1b[0m')
-  const id = request.params.id
+//   const decodedToken = await jwt.verify(request.token, process.env.SECRET)
+//   if (!decodedToken.id) {
+//     return response.status(401).json({
+//       error: 'token missing or invalid'
+//     })
+//   }
+//   const {
+//     text,
+//     chatId,
+//   } = request.body
+//   console.log('\x1b[42m chatId', chatId, '\x1b[0m')
+//   console.log('\x1b[42mchatId', chatId, '\x1b[0m')
+//   const id = request.params.id
 
-  if (!chatId) {
-    const chat = new Chat({
-      user: decodedToken.id,
-      personal: id,
-      massages: [],
-    })
-    const savedChat = await chat.save()
+//   if (!chatId) {
+//     const chat = new Chat({
+//       user: decodedToken.id,
+//       personal: id,
+//       massages: [],
+//     })
+//     const savedChat = await chat.save()
 
-    const ownerUser = await User.findById(decodedToken.id)
-    ownerUser.chats = ownerUser.chats.concat(savedChat._id)
-    await ownerUser.save()
+//     const ownerUser = await User.findById(decodedToken.id)
+//     ownerUser.chats = ownerUser.chats.concat(savedChat._id)
+//     await ownerUser.save()
 
-    const recipientUser = await Personal.findById(id)
-    recipientUser.chats = recipientUser.chats.concat(savedChat._id)
-    await recipientUser.save()
+//     const recipientUser = await Personal.findById(id)
+//     recipientUser.chats = recipientUser.chats.concat(savedChat._id)
+//     await recipientUser.save()
 
-    const newChat = await Chat.findById(savedChat._id)
+//     const newChat = await Chat.findById(savedChat._id)
 
-    const newMassege = new Massage({
-      ovner: decodedToken.id,
-      chat: newChat._id,
-      text: text,
-      data: new Date(),
-      isReaded: false,
-    })
-    const savedMassage = await newMassege.save()
+//     const newMassege = new Massage({
+//       ovner: decodedToken.id,
+//       chat: newChat._id,
+//       text: text,
+//       data: new Date(),
+//       isReaded: false,
+//     })
+//     const savedMassage = await newMassege.save()
 
-    newChat.massages = newChat.massages.concat(savedMassage._id)
-    await newChat.save()
+//     newChat.massages = newChat.massages.concat(savedMassage._id)
+//     await newChat.save()
 
-    return response.json(savedMassage)
-  } else {
-    console.log('\x1b[42m satrt \x1b[0m')
+//     return response.json(savedMassage)
+//   } else {
+//     console.log('\x1b[42m satrt \x1b[0m')
 
-    const chat = await Chat.findById(chatId)
+//     const chat = await Chat.findById(chatId)
 
-    const newMassege = new Massage({
-      ovner: decodedToken.id,
-      recipient: id,
-      chat: chat._id,
-      text: text,
-      data: new Date(),
-      isReaded: false,
-    })
-    const savedMassage = await newMassege.save()
-    console.log('\x1b[42m savedMassage', savedMassage, '\x1b[0m')
-    chat.massages = chat.massages.concat(savedMassage._id)
-    await chat.save()
+//     const newMassege = new Massage({
+//       ovner: decodedToken.id,
+//       recipient: id,
+//       chat: chat._id,
+//       text: text,
+//       data: new Date(),
+//       isReaded: false,
+//     })
+//     const savedMassage = await newMassege.save()
+//     console.log('\x1b[42m savedMassage', savedMassage, '\x1b[0m')
+//     chat.massages = chat.massages.concat(savedMassage._id)
+//     await chat.save()
 
-    return response.json(savedMassage)
-  }
+//     return response.json(savedMassage)
+//   }
 
-})
+// })
 
-//set readed
-dialogsRouter.put('/read/:id', async (request, response) => {
-  const decodedToken = await jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({
-      error: 'token missing or invalid'
-    })
-  }
-  const id = request.params.id
-  const massage = Massage.findById(id)
-  const newMsssage = {
-    isReaded: true
-  }
-  if (massage.recipient !== decodedToken.id) {
-    return response.status(401).json({
-      error: 'wrong user'
-    })
-  }
-  const massageReadeded = await Massage.findByIdAndUpdate(id, newMsssage, {
-    new: true
-  })
-  response.json(massageReadeded)
-})
+
 
 module.exports = dialogsRouter

@@ -10,6 +10,7 @@ const peopleRouter = require('./controllers/people')
 const loginRouter = require('./controllers/login')
 const mailsRouter = require('./controllers/mails')
 const dialogsRouter = require('./controllers/dialogs')
+const messagessRouter = require('./controllers/messages')
 
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -38,13 +39,14 @@ morgan.token('body', function (req) {
 app.use(morgan('dev'))
 app.use(morgan(' \x1b[35m :body  \x1b[0m'))
 
-app.use(middleware.tokenExtractor)
+// app.use(middleware.tokenExtractor)
 app.use('/api/user', usersRouter)
 app.use('/api/personal', personalsRouter)
 app.use('/api/people', peopleRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/mails', mailsRouter)
 app.use('/api/dialogs', dialogsRouter)
+app.use('/api/message', messagessRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

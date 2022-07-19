@@ -25,6 +25,8 @@ https://fathomless-taiga-29564.herokuapp.com/
     
 /api/dialogs
     GET ()(token) // get all dialogs fo user
+    POST (/)(token) // create new dialog
+    GET (/id)(token) // get dialog with messages
     
 
 
