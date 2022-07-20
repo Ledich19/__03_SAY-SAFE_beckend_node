@@ -1,5 +1,6 @@
 const logger = require('./logger')
 const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 
 
 const requestLogger = (request, response, next) => {
@@ -35,7 +36,6 @@ const userExtractor = async (request, response, next) => {
   next()
 }
 
-
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
@@ -60,7 +60,12 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
+const updateLastSeen = async (request, response, next) => {
+  await User.findByIdAndUpdate(request.user.id, { lastSeen: new Date() })
+  next()
+}
 module.exports = {
+  updateLastSeen,
   userExtractor,
   requestLogger,
   unknownEndpoint,

@@ -273,7 +273,7 @@ dialogsRouter.post('/',userExtractor, async (request, response) => {
 
   response.json(createdDialog)
 })
-//delete dialog
+//delete dialog  ( доделать )
 dialogsRouter.delete('/:id',userExtractor, async (request, response) => {
   const id = request.params.id
   await Dialog.findByIdAndRemove(id)

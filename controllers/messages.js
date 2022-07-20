@@ -37,7 +37,7 @@ messagesRouter.post('/',userExtractor, async (request, response) => {
   response.json(savedMassage)
 })
 
-//delete dialog
+//delete message
 messagesRouter.delete('/:id',userExtractor, async (request, response) => {
   const id = request.params.id
   const message = await Message.findById(id)
@@ -57,7 +57,7 @@ messagesRouter.delete('/:id',userExtractor, async (request, response) => {
 
 module.exports = messagesRouter
 
-//set readed
+//set readed ( не сделано )
 messagesRouter.put('/read/:id', async (request, response) => {
   const decodedToken = await jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) {

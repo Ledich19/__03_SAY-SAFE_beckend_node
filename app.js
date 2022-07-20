@@ -31,7 +31,6 @@ app.use(cors())
 
 app.use(express.static('build'))
 app.use(express.json())
-app.use(middleware.requestLogger)
 
 morgan.token('body', function (req) {
   return JSON.stringify(req.body)
@@ -39,11 +38,12 @@ morgan.token('body', function (req) {
 app.use(morgan('dev'))
 app.use(morgan(' \x1b[35m :body  \x1b[0m'))
 
-// app.use(middleware.tokenExtractor)
+app.use('/api/login', loginRouter)
 app.use('/api/user', usersRouter)
+// app.use( middleware.userExtractor ,middleware.requestLogger)
+// app.use(middleware.tokenExtractor)
 app.use('/api/personal', personalsRouter)
 app.use('/api/people', peopleRouter)
-app.use('/api/login', loginRouter)
 app.use('/api/mails', mailsRouter)
 app.use('/api/dialogs', dialogsRouter)
 app.use('/api/message', messagessRouter)

@@ -21,7 +21,10 @@ const userSchema = new mongoose.Schema({
   avatar: String,
   confirmedHesh: String,
 
-  lastSeen: Date,
+  lastSeen: {
+    type: Date,
+    default: new Date
+  },
 
   name: String,
   lastName: String,
