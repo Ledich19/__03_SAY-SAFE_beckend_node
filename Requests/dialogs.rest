@@ -9,7 +9,7 @@ Content-Type: application/json
 ###
 //get all user dialogs
 GET http://localhost:3001/api/dialogs
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1NzcyNzMzMCwiZXhwIjoxNjU4MzMyMTMwfQ.YkCO5Qf4FHTd1QSNtM2Q2qTBnGRgtwzrrsumB6hKVak
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1ODY3MzU3NiwiZXhwIjoxNjU5Mjc4Mzc2fQ.8W1Dz5IqMG2FA_CGqe59JpAOWg9iP2KpxN4OCiv0PeM
 
 ###
 //get dialog with messages

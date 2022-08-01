@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const { userExtractor } = require('../utils/middleware')
 
 usersRouter.get('/', async (request, response) => {
   const users = await User.find({})
@@ -13,6 +14,15 @@ usersRouter.get('/', async (request, response) => {
   // })
   response.json(users)
 })
+
+// get my info
+usersRouter.get('/me',userExtractor , async (request, response) => {
+  console.log('111111111111111111')
+  const userId = request.user.id
+  const user = await User.findById(userId)
+  response.json(user)
+})
+
 // get user by id
 usersRouter.get('/:id', async (request, response) => {
   const id = request.params.id
@@ -34,18 +44,6 @@ usersRouter.get('/:id', async (request, response) => {
     Photos: user.Photos ,
   }
   response.json(userResponse)
-})
-// get my info
-usersRouter.get('/me', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({
-      error: 'token missing or invalid'
-    })
-  }
-  const user = await User.findById(decodedToken.id)
-
-  response.json(user)
 })
 
 //new user

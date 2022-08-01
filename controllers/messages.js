@@ -7,6 +7,8 @@ const Message = require('../models/massage')
 
 //post messages to dialog id
 messagesRouter.post('/',userExtractor, async (request, response) => {
+  const io = request.app.get('socketio')
+  const ovner = request.user.id
 
   const {
     dialogId,
@@ -14,7 +16,8 @@ messagesRouter.post('/',userExtractor, async (request, response) => {
     atachments,
     type
   } = request.body
-  const ovner = request.user.id
+
+  const updateDialog = await Dialog.findById(dialogId)
 
   const newMassege = new Message ({
     ovner,
@@ -22,9 +25,9 @@ messagesRouter.post('/',userExtractor, async (request, response) => {
     text,
     wasRead: false,
     type,
+    recipient: updateDialog.personal,
     atachments
   })
-  const updateDialog = await Dialog.findById(dialogId)
   const savedMassage = await  newMassege.save()
 
   const newDialogInfo =  {
@@ -35,6 +38,7 @@ messagesRouter.post('/',userExtractor, async (request, response) => {
 
 
   response.json(savedMassage)
+  io.emit('SERVER:NEW_MESSAGE', savedMassage)
 })
 
 //delete message

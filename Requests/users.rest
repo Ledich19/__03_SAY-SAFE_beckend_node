@@ -2,6 +2,11 @@ GET http://localhost:3001/api/user
 
 ###
 
+GET http://localhost:3001/api/user/me
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYyYTcxYTJmNjhiMjU4OWFkN2M3MmViMSIsImlhdCI6MTY1ODc1NDgxOCwiZXhwIjoxNjU5MzU5NjE4fQ.9y7wnzYM-YDDaK0W02tqis1omJeE-d2s4xYFNPzL40Q
+
+###
+
 POST http://localhost:3001/api/user/registration
 Content-Type: application/json
 

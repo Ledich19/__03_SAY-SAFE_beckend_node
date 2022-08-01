@@ -7,6 +7,10 @@ const Dialog = require('../models/dialog')
 //get all users dialogs without messages
 dialogsRouter.get( '/',userExtractor, async (request, response) => {
 
+  var io = request.app.get('socketio')
+  console.log('\x1b[33m iiiiiii \x1b[0m','io')
+  io.emit('RECEIVE_MESSAGE', 'riiiiiiiiiii')
+
   const user = await User
     .findById(request.user.id)
     .populate({

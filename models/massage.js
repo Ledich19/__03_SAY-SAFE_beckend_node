@@ -5,6 +5,10 @@ const massagesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     require: true,
   },
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+  },
   dialog: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Dialog',
